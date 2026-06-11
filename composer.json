@@ -1,19 +1,15 @@
 {
-	"description": "The CodeIgniter framework",
-	"name": "codeigniter/framework",
-	"type": "project",
-	"homepage": "http://codeigniter.com",
-	"license": "MIT",
-	"support": {
-		"forum": "http://forum.codeigniter.com/",
-		"wiki": "https://github.com/bcit-ci/CodeIgniter/wiki",
-		"irc": "irc://irc.freenode.net/codeigniter",
-		"source": "https://github.com/bcit-ci/CodeIgniter"
-	},
-	"require": {
-		"php": "^8.1"
-	},
-	"require-dev": {
-		"mikey179/vfsStream": "1.1.*"
-	}
+    "name": "codeigniter/framework",
+    "description": "The CodeIgniter framework",
+    "type": "project",
+    "require": {
+        "php": "8.1.*",
+        "ext-pgsql": "*",
+        "ext-pdo_pgsql": "*"
+    },
+    "config": {
+        "platform": {
+            "php": "8.1"
+        }
+    }
 }
