@@ -3,8 +3,14 @@
     "description": "The CodeIgniter framework",
     "type": "project",
     "require": {
-        "php": "^8.2",
+        "php": ">=8.1",
         "ext-pgsql": "*",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "ext-json": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
     }
 }
