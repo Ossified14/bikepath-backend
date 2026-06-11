@@ -1,58 +1,38 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-/**
- * Base Controller for RESTful API in Bikepath
- * Handles CORS, JSON Input, and JSON Responses
- */
 class MY_Controller extends MX_Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         
-        // Handle CORS - Pindahkan ke paling atas
-        $this->_handle_cors();
-        
-        $this->load->library('jwt');
-    }
-
-    /**
-     * Handle Cross-Origin Resource Sharing (CORS)
-     */
-    private function _handle_cors()
-    {
+        // --- START CORS FIX ---
+        // Mengizinkan domain apapun untuk mengakses API ini
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
         header("Access-Control-Allow-Headers: Content-Type, Content-Length, Accept-Encoding, Authorization, X-Requested-With, Origin, Accept");
         
+        // Menangani permintaan "Preflight" (OPTIONS) yang dikirim browser
         if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             header("HTTP/1.1 200 OK");
             exit;
         }
+        // --- END CORS FIX ---
+        
+        $this->load->library('jwt');
     }
 
-    /**
-     * Get JSON input from request body
-     */
-    protected function get_json_input()
-    {
+    protected function get_json_input() {
         $raw_input = file_get_contents('php://input');
-        $input = json_decode($raw_input, true);
-        return $input ?: [];
+        return json_decode($raw_input, true) ?: [];
     }
 
-    /**
-     * Standard JSON response method
-     */
-    protected function response_json($data, $status_code = 200)
-    {
-        // Tambahkan header lagi di sini untuk memastikan respon JSON tetap membawa header CORS
+    protected function response_json($data, $status_code = 200) {
+        // Pastikan header CORS juga dikirim saat memberikan respon JSON
         header("Access-Control-Allow-Origin: *");
         header('Content-Type: application/json; charset=utf-8');
-        
         $this->output->set_status_header($status_code);
-        echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        echo json_encode($data);
         exit;
     }
 }
