@@ -22,8 +22,12 @@ class Friendship_model extends CI_Model {
     }
 
     public function follow($user_id, $friend_id) {
+        $exists = $this->db->get_where('friendships', ['user_id' => $user_id, 'friend_id' => $friend_id])->num_rows();
+        if ($exists > 0) {
+            return true;
+        }
         $data = ['user_id' => $user_id, 'friend_id' => $friend_id];
-        return $this->db->replace('friendships', $data);
+        return $this->db->insert('friendships', $data);
     }
 
     public function unfollow($user_id, $friend_id) {
