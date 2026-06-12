@@ -9,7 +9,11 @@ class Friendship_model extends CI_Model {
         $this->db->join('users', 'users.id = friendships.friend_id');
         $this->db->join('user_profiles up', 'up.user_id = users.id', 'left');
         $this->db->where('friendships.user_id', $user_id);
-        $friends = $this->db->get()->result();
+        $query = $this->db->get();
+        
+        if (!$query) return [];
+        
+        $friends = $query->result();
 
         foreach ($friends as $f) {
             if ($f->avatar) {
@@ -23,16 +27,15 @@ class Friendship_model extends CI_Model {
     }
 
     public function follow($user_id, $friend_id) {
-        // Force integer for PostgreSQL compatibility
         $u_id = (int)$user_id;
         $f_id = (int)$friend_id;
 
-        // Cek jika sudah berteman
+        // Pastikan tabel friendships ada dan query tidak crash
         $this->db->where('user_id', $u_id);
         $this->db->where('friend_id', $f_id);
-        $exists = $this->db->get('friendships')->num_rows();
-
-        if ($exists > 0) {
+        $query = $this->db->get('friendships');
+        
+        if ($query && $query->num_rows() > 0) {
             return true;
         }
 
@@ -41,7 +44,6 @@ class Friendship_model extends CI_Model {
             'friend_id' => $f_id
         ];
         
-        // Gunakan insert biasa
         return $this->db->insert('friendships', $data);
     }
 

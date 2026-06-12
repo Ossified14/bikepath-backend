@@ -36,7 +36,13 @@ class Friendship extends MY_Controller {
         if ($result) {
             return $this->response_json(['status' => true, 'message' => 'Followed']);
         } else {
-            return $this->response_json(['status' => false, 'message' => 'Failed to follow'], 500);
+            // Ambil error database untuk diagnosa
+            $db_error = $this->db->error();
+            return $this->response_json([
+                'status' => false, 
+                'message' => 'Database error occurred',
+                'details' => $db_error['message'] ?? 'Unknown error'
+            ], 500);
         }
     }
 
