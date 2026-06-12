@@ -1,12 +1,5 @@
 <?php
 
-function is_login(){
-      $CI     =   & get_instance();
-      if($CI->session->userdata('login_status')==''){
-          redirect('auth');
-      }
-}
-
 function tgl_indo($tanggal){
 	$bulan = array (
 		1 =>   'Januari',
